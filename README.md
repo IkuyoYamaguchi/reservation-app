@@ -86,7 +86,6 @@ cd demo
 .\gradlew.bat bootRun
 # http://localhost:8080 で起動します
 
-# 4. フロントエンド (React) を起動（別のターミナルで実行）
 cd reservation-frontend
 npm install
 npm run dev
