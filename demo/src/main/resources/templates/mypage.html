@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>マイページ（予約確認）</title>
+</head>
+<body>
+<h1>マイページ（予約確認画面）</h1>
+
+<!-- 名前で自分の予約を検索するフォーム -->
+<form action="/mypage" method="get">
+    <label>あなたのお名前で確認：</label>
+    <input type="text" name="name" th:value="${searchName}" placeholder="例: 山口郁代" required>
+    <button type="submit">予約を検索する</button>
+</form>
+<br>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>名前</th>
+        <th>日付</th>
+        <th>ステータス</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="reservation : ${reservations}">
+        <td th:text="${reservation.id}">1</td>
+        <td th:text="${reservation.name}">サンプル太郎</td>
+        <td th:text="${reservation.date}">2026-06-01</td>
+        <!-- ステータスを表示（未設定なら「予約確定」とする） -->
+        <td th:text="${reservation.status != null ? reservation.status : '予約確定'}">予約確定</td>
+        <td>
+            <!-- キャンセルボタン -->
+            <a th:href="@{/cancel(id=${reservation.id})}">
+                <button type="button">キャンセルする</button>
+            </a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<br>
+<a href="/">トップページに戻る</a>
+</body>
+</html>

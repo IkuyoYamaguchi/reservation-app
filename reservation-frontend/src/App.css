@@ -1,0 +1,266 @@
+/* 全体のベース設定 */
+body {
+  margin: 0;
+  padding: 0;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial, sans-serif;
+  background-color: #f7f5f2; /* 柔らかいグレージュトーンの背景 */
+  color: #4a4543;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* アプリ全体のコンテナ：画面幅に合わせて伸縮しつつ、広がりすぎないように調整 */
+.app-container {
+  width: 90%; /* 画面が狭いときは横幅の90%を使う */
+  max-width: 580px; /* パソコンなどでは最大580pxまでにする */
+  margin: 40px auto; /* 上下に余白を取り、左右は中央寄せ */
+  padding: 30px 20px; /* 内側の余白 */
+  box-sizing: border-box; /* パディングを含めてサイズを計算する */
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(74, 69, 67, 0.05);
+  border: 1px solid #efece9;
+}
+
+/* ヘッダー・ナビゲーション */
+header {
+  margin-bottom: 30px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eae5e1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap; /* 画面がすごく狭いときに折り返せるようにする */
+  gap: 10px;
+}
+
+header h2 {
+  color: #5a524c;
+  font-size: 1.2rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  margin: 0;
+}
+
+header nav {
+  display: flex;
+  gap: 8px;
+}
+
+/* ナビゲーションタブボタン */
+header nav button {
+  background-color: #f4f0ec;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-family: inherit;
+  color: #7a726b;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+header nav button:hover {
+  background-color: #e8e1da;
+  color: #4a4543;
+}
+
+/* アクティブなタブ（ピンクベージュ系のアクセント） */
+header nav button.active {
+  background-color: #d8b8b3 !important;
+  color: #ffffff !important;
+  font-weight: 500;
+}
+
+/* メインコンテンツ */
+main {
+  background-color: #ffffff;
+  padding: 10px 0;
+}
+
+main h2 {
+  font-size: 1.15rem;
+  color: #5a524c;
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+}
+
+/* フォームのラベルと入力欄 */
+label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #7a726b;
+  display: inline-block;
+  margin-bottom: 6px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="date"] {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1px solid #ded6d0;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+  background-color: #faf8f6;
+  color: #4a4543;
+}
+
+input:focus {
+  outline: none;
+  border-color: #d8b8b3;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(216, 184, 179, 0.15);
+}
+
+/* メインボタン（ピンクベージュ系） */
+button[type="submit"],
+.btn-primary {
+  background-color: #c9a5a0;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-family: inherit;
+  font-weight: 500;
+  width: 100%;
+  transition:
+    background-color 0.2s ease,
+    transform 0.1s ease;
+}
+
+button[type="submit"]:hover,
+.btn-primary:hover {
+  background-color: #b8928d;
+}
+
+button[type="submit"]:active,
+.btn-primary:active {
+  transform: scale(0.99);
+}
+
+/* マイページの検索フォームのレイアウト */
+form[onSubmit*="Search"] {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 25px;
+  flex-wrap: wrap; /* スマホで縦並びに崩れないようにする配慮 */
+}
+
+form[onSubmit*="Search"] input {
+  flex: 1;
+  min-width: 200px;
+}
+
+form[onSubmit*="Search"] button {
+  width: auto;
+  padding: 10px 18px;
+  background-color: #8c827b;
+}
+
+form[onSubmit*="Search"] button:hover {
+  background-color: #756c65;
+}
+
+/* 予約リストのカード */
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+li {
+  border: 1px solid #eae5e1;
+  padding: 18px;
+  margin-bottom: 14px;
+  border-radius: 10px;
+  background-color: #faf8f6;
+  transition: all 0.2s ease;
+}
+
+li:hover {
+  border-color: #d8b8b3;
+  box-shadow: 0 4px 12px rgba(74, 69, 67, 0.04);
+}
+
+li p {
+  margin: 5px 0;
+  font-size: 0.9rem;
+  color: #5a524c;
+}
+
+/* キャンセルボタン */
+li button {
+  background-color: #b87a7a;
+  color: white;
+  border: none;
+  padding: 6px 14px;
+  cursor: pointer;
+  margin-top: 12px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-family: inherit;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+li button:hover {
+  background-color: #a36868;
+}
+
+/* 戻るボタン */
+.btn-back {
+  background-color: #b0a8a2;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-family: inherit;
+  font-weight: 500;
+}
+
+.btn-back:hover {
+  background-color: #9c948e;
+}
+
+/* 予約完了ポップアップ（モーダル）の背景 */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(74, 69, 67, 0.4);
+  backdrop-filter: blur(3px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 15px; /* スマホの端に寄ったときに余白を確保 */
+  box-sizing: border-box;
+}
+
+/* モーダルのボックス本体 */
+.modal-content {
+  background: #ffffff;
+  padding: 35px 30px;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 15px 35px rgba(74, 69, 67, 0.1);
+  text-align: center;
+  border: 1px solid #efece9;
+  box-sizing: border-box;
+}

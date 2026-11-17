@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>予約一覧</title>
+</head>
+<body>
+<h1>予約一覧画面</h1>
+
+<!-- 予約データがあればテーブルで表示する -->
+<table border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>名前</th>
+        <th>日付</th>
+        <th>ステータス</th> <!-- 追加 -->
+        <th>操作</th>       <!-- 追加 -->
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="reservation : ${reservations}">
+        <td th:text="${reservation.id}">1</td>
+        <td th:text="${reservation.name}">サンプル太郎</td>
+        <td th:text="${reservation.date}">2026-06-01</td>
+
+        <!-- ★ここはステータス「文字」を表示する場所にする -->
+        <td th:text="${reservation.status}">予約確定</td>
+
+        <!-- ★ここが「操作」の列（キャンセルボタンを置く場所） -->
+        <td>
+            <a th:href="@{/cancel(id=${reservation.id})}">
+                <button type="button">キャンセル</button>
+            </a>
+        </td>
+    </tr>
+
+    </tbody>
+</table>
+
+<br>
+<a href="http://localhost:8081/">トップページに戻る</a>
+</body>
+</html>
