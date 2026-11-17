@@ -74,7 +74,7 @@ erDiagram
 
 ```bash
 # 1. リポジトリをクローン
-git clone [https://github.com/IkuyoYamaguchi/reservation-app.git](https://github.com/IkuyoYamaguchi/reservation-app.git)
+git clone https://github.com/IkuyoYamaguchi/reservation-app.git
 cd reservation-app
 
 # 2. データベースを作成 (MySQL)
@@ -83,7 +83,7 @@ cd reservation-app
 
 # 3. バックエンド (Spring Boot) を起動
 cd demo
-./gradlew bootRun
+.\gradlew.bat bootRun
 # http://localhost:8080 で起動します
 
 # 4. フロントエンド (React) を起動（別のターミナルで実行）
