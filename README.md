@@ -47,7 +47,7 @@
 
 ## ER図（データベース設計）
 
-````mermaid
+```mermaid
 erDiagram
     reservations {
         Long id PK "予約ID"
@@ -57,33 +57,37 @@ erDiagram
         String reservation_date "希望日"
         String status "ステータス"
     }
+```
 
 ## ローカル環境での起動方法
+
 評価者がご自身のPCで起動・動作確認を行う際の手順です。
 
 ### 必要環境
+
 - Java 21
 - Node.js
 - MySQL
 - Git
 
 ### インストール・手順
+
 ```bash
 # 1. リポジトリをクローン
 git clone [https://github.com/IkuyoYamaguchi/reservation-app.git](https://github.com/IkuyoYamaguchi/reservation-app.git)
-cd リポジトリ名
+cd reservation-app
 
 # 2. データベースを作成 (MySQL)
 # MySQLにログイン後、 `CREATE DATABASE reservation_db;` を実行してください。
-# 設定ファイル (backend/src/main/resources/application.properties) のパスワード等も適宜変更してください。
+# 設定ファイル (demo/src/main/resources/application.properties) のパスワード等も適宜変更してください。
 
 # 3. バックエンド (Spring Boot) を起動
-cd backend
+cd demo
 ./gradlew bootRun
 # http://localhost:8080 で起動します
 
 # 4. フロントエンド (React) を起動（別のターミナルで実行）
-cd frontend
+cd reservation-frontend
 npm install
 npm run dev
-````
+```
