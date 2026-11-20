@@ -1,7 +1,18 @@
 import { useState } from "react";
 import "./App.css";
 
+// ローカルタイム基準で「YYYY-MM-DD」形式の今日の日付を取得
+const getTodayString = () => {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const day = String(now.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
+
 function App() {
+  const today = getTodayString();
+
   // 現在の画面 ('top' | 'mypage')
   const [currentPage, setCurrentPage] = useState("top");
 
@@ -14,6 +25,7 @@ function App() {
   // マイページ用の状態
   const [reservations, setReservations] = useState([]);
   const [searchEmail, setSearchEmail] = useState("");
+  const [hasSearched, setHasSearched] = useState(false);
 
   // ポップアップ（予約完了モーダル）の制御用状態
   const [showModal, setShowModal] = useState(false);
@@ -108,6 +120,7 @@ function App() {
   const handleSearchByEmail = async (targetEmail) => {
     if (!targetEmail) {
       setReservations([]);
+      setHasSearched(false);
       return;
     }
 
@@ -117,6 +130,7 @@ function App() {
       if (response.ok) {
         const data = await response.json();
         setReservations(data);
+        setHasSearched(true);
       }
     } catch (error) {
       console.error("データ取得エラー:", error);
@@ -145,6 +159,7 @@ function App() {
               setCurrentPage("mypage");
               setReservations([]);
               setSearchEmail("");
+              setHasSearched(false);
             }}
             className={currentPage === "mypage" ? "active" : ""}
           >
@@ -156,7 +171,7 @@ function App() {
       {message && <p style={{ color: "red" }}>{message}</p>}
 
       {/* ==========================================
-          1. トップページ（予約入力画面）
+1. トップページ（予約入力画面）
           ========================================== */}
       {currentPage === "top" && (
         <main>
@@ -169,7 +184,8 @@ function App() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
-                placeholder="例：山田 太郎"
+                maxLength={20}
+                placeholder="例：山田 花子"
               />
             </div>
             <div style={{ marginBottom: "16px" }}>
@@ -183,20 +199,24 @@ function App() {
               />
             </div>
             <div style={{ marginBottom: "16px" }}>
-              <label>電話番号</label>
+              <label>電話番号（半角数字10〜11桁・ハイフンなし）</label>
               <input
                 type="tel"
                 value={tel}
                 onChange={(e) => setTel(e.target.value)}
                 required
+                maxLength={11}
+                pattern="[0-9]{10,11}"
+                title="半角数字10〜11桁（ハイフンなし）で入力してください"
                 placeholder="例：09012345678"
               />
             </div>
             <div style={{ marginBottom: "24px" }}>
-              <label>予約希望日</label>
+              <label>予約希望日（本日以降）</label>
               <input
                 type="date"
                 value={date}
+                min={today}
                 onChange={(e) => setDate(e.target.value)}
                 required
               />
@@ -207,7 +227,7 @@ function App() {
       )}
 
       {/* ==========================================
-          2. マイページ（利用者向け予約確認画面）
+2. マイページ（利用者向け予約確認画面）
           ========================================== */}
       {currentPage === "mypage" && (
         <main>
@@ -222,18 +242,27 @@ function App() {
             <input
               type="email"
               value={searchEmail}
-              onChange={(e) => setSearchEmail(e.target.value)}
+              onChange={(e) => {
+                setSearchEmail(e.target.value);
+                setHasSearched(false);
+              }}
               placeholder="登録したメールアドレスを入力"
               required
             />
             <button type="submit">検索</button>
           </form>
 
-          {reservations.length === 0 ? (
+          {!hasSearched ? (
             <p
               style={{ color: "#666", textAlign: "center", padding: "20px 0" }}
             >
-              該当する予約データはありません。
+              メールアドレスを入力して「検索」ボタンを押してください。
+            </p>
+          ) : reservations.length === 0 ? (
+            <p
+              style={{ color: "#666", textAlign: "center", padding: "20px 0" }}
+            >
+              該当する予約データはありませんでした。
             </p>
           ) : (
             <ul>
@@ -298,7 +327,7 @@ function App() {
       )}
 
       {/* ==========================================
-          3. 予約完了ポップアップ（モーダル）
+3. 予約完了ポップアップ（モーダル）
           ========================================== */}
       {showModal && registeredData && (
         <div className="modal-overlay">

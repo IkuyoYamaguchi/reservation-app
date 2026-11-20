@@ -5,10 +5,16 @@ import com.example.demo.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/reservations")
@@ -20,10 +26,28 @@ public class ReservationController {
 
     // ① 予約登録API (POST /api/reservations)
     @PostMapping
-    public ResponseEntity<?> addReservation(@RequestBody Reservation reservation) {
+    public ResponseEntity<?> addReservation(
+            @Valid @RequestBody Reservation reservation,
+            BindingResult bindingResult) {
         try {
-            if (reservation.getName() == null || reservation.getDate() == null) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("入力不備があります。");
+            // Entity側のバリデーションエラーチェック
+            if (bindingResult.hasErrors()) {
+                String errorMessage = bindingResult.getFieldErrors().stream()
+                        .map(FieldError::getDefaultMessage)
+                        .collect(Collectors.joining(" / "));
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
+            }
+
+            // 予約希望日（YYYY-MM-DD）が今日以降かチェック
+            try {
+                LocalDate selectedDate = LocalDate.parse(reservation.getDate());
+                if (selectedDate.isBefore(LocalDate.now())) {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                            .body("予約希望日は本日以降の日付を選択してください。");
+                }
+            } catch (DateTimeParseException e) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body("予約希望日の形式が正しくありません。");
             }
 
             Reservation saved = reservationService.saveReservation(reservation);
@@ -54,13 +78,14 @@ public class ReservationController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("指定された予約が見つかりません。");
         }
     }
+
     // ④ 予約削除API (DELETE /api/reservations/{id})
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteReservation(@PathVariable Long id) {
         try {
             Optional<Reservation> optionalReservation = reservationService.findById(id);
             if (optionalReservation.isPresent()) {
-                reservationService.deleteReservation(id); // または reservationRepository.deleteById(id);
+                reservationService.deleteReservation(id);
                 return ResponseEntity.ok("予約を完全に削除しました。");
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("指定された予約が見つかりません。");
