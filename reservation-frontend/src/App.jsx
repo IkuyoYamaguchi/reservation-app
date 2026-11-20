@@ -185,7 +185,7 @@ function App() {
                 onChange={(e) => setName(e.target.value)}
                 required
                 maxLength={20}
-                placeholder="例：山田 花子"
+                placeholder="例：山田 太郎"
               />
             </div>
             <div style={{ marginBottom: "16px" }}>
