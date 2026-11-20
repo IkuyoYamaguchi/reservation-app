@@ -83,7 +83,7 @@ cd reservation-app
 
 # 3. バックエンド (Spring Boot) を起動
 cd demo
-.\gradlew.bat bootRun
+.\mvnw.cmd spring-boot:run
 # http://localhost:8080 で起動します
 
 
